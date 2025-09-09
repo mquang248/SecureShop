@@ -1,0 +1,22 @@
+// Export all 18 product pages
+export { default as Product1 } from './Product1'
+export { default as Product2 } from './Product2'
+export { default as Product3 } from './Product3'
+export { default as Product4 } from './Product4'
+export { default as Product5 } from './Product5'
+export { default as Product6 } from './Product6'
+export { default as Product7 } from './Product7'
+export { default as Product8 } from './Product8'
+export { default as Product9 } from './Product9'
+export { default as Product10 } from './Product10'
+export { default as Product11 } from './Product11'
+export { default as Product12 } from './Product12'
+export { default as Product13 } from './Product13'
+export { default as Product14 } from './Product14'
+export { default as Product15 } from './Product15'
+export { default as Product16 } from './Product16'
+export { default as Product17 } from './Product17'
+export { default as Product18 } from './Product18'
+
+// Products are now fetched from API instead of static data
+export { default as ProductTemplate } from './ProductTemplate'
