@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SecureShop API Tester</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .endpoint { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; }
+        .error { background-color: #f8d7da; }
+        button { padding: 5px 10px; margin: 5px; }
+        pre { background: #f8f9fa; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>SecureShop API Tester</h1>
+    
+    <div class="endpoint">
+        <h3>/api/test</h3>
+        <button onclick="testEndpoint('/api/test', 'test-result')">Test</button>
+        <div id="test-result"></div>
+    </div>
+
+    <div class="endpoint">
+        <h3>/api/debug</h3>
+        <button onclick="testEndpoint('/api/debug', 'debug-result')">Test</button>
+        <div id="debug-result"></div>
+    </div>
+
+    <div class="endpoint">
+        <h3>/api/products</h3>
+        <button onclick="testEndpoint('/api/products', 'products-result')">Test</button>
+        <div id="products-result"></div>
+    </div>
+
+    <div class="endpoint">
+        <h3>/api/products/featured</h3>
+        <button onclick="testEndpoint('/api/products/featured', 'featured-result')">Test</button>
+        <div id="featured-result"></div>
+    </div>
+
+    <div class="endpoint">
+        <h3>/api/products/categories</h3>
+        <button onclick="testEndpoint('/api/products/categories', 'categories-result')">Test</button>
+        <div id="categories-result"></div>
+    </div>
+
+    <script>
+        async function testEndpoint(url, resultId) {
+            const resultDiv = document.getElementById(resultId);
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ Success (${response.status})</strong>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.className = 'error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ Error (${response.status})</strong>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = `
+                    <strong>❌ Network Error</strong>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+
+        // Test all endpoints on load
+        window.onload = function() {
+            setTimeout(() => {
+                testEndpoint('/api/test', 'test-result');
+                testEndpoint('/api/debug', 'debug-result');
+                testEndpoint('/api/products', 'products-result');
+                testEndpoint('/api/products/featured', 'featured-result');
+                testEndpoint('/api/products/categories', 'categories-result');
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
