@@ -23,9 +23,19 @@ const HomePage = () => {
   const { data: featuredProducts, isLoading: loadingProducts, error } = useQuery({
     queryKey: ['featured-products'],
     queryFn: async () => {
-      const response = await api.get('/products/featured')
-      console.log('API Response:', response.data)
-      return response.data.data.products
+      console.log('🔍 Calling API endpoint: /products/featured')
+      console.log('🌐 Base API URL:', api.defaults.baseURL)
+      
+      try {
+        const response = await api.get('/products/featured')
+        console.log('✅ API Response Success:', response.data)
+        return response.data.data.products
+      } catch (error) {
+        console.error('❌ API Error:', error)
+        console.error('❌ Error response:', error.response?.data)
+        console.error('❌ Error status:', error.response?.status)
+        throw error
+      }
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
