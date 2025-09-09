@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
@@ -7,126 +8,196 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Test route
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'API is working!', timestamp: new Date().toISOString() });
+// MongoDB connection
+let isConnected = false;
+
+const connectToDatabase = async () => {
+  if (isConnected) {
+    return;
+  }
+
+  try {
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://mquang248:Quang28082004@secureshop.rkpnj.mongodb.net/secureshop?retryWrites=true&w=majority', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    throw error;
+  }
+};
+
+// Product Schema (simplified for API)
+const productSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  category: { type: String, required: true },
+  image: { type: String, default: '/placeholder-product.jpg' },
+  featured: { type: Boolean, default: false },
+  inStock: { type: Boolean, default: true },
+  stockQuantity: { type: Number, default: 0 },
+  features: [String],
+  specifications: { type: Map, of: String }
 });
 
-// Products routes
-app.get('/api/products', (req, res) => {
-  // Mock products data
-  const products = [
-    {
-      id: 1,
-      name: "Advanced Firewall System",
-      price: 299.99,
-      description: "Professional-grade firewall with AI threat detection",
-      category: "Network Security",
-      image: "/placeholder-product.jpg",
-      featured: true,
-      features: ["AI-powered threat detection", "Real-time monitoring", "Cloud integration"],
-      specifications: {
-        "Throughput": "10 Gbps",
-        "Supported Protocols": "HTTP/HTTPS, FTP, SSH",
-        "Operating System": "Linux-based"
-      }
-    },
-    {
-      id: 2,
-      name: "Enterprise VPN Gateway",
-      price: 599.99,
-      description: "Secure VPN gateway for enterprise networks",
-      category: "Network Security",
-      image: "/placeholder-product.jpg",
-      featured: true,
-      features: ["Site-to-site VPN", "Remote access VPN", "Multi-protocol support"],
-      specifications: {
-        "Concurrent Users": "500",
-        "Encryption": "AES-256",
-        "Protocols": "IPSec, SSL/TLS"
-      }
+const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
+
+// Category Schema
+const categorySchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  image: { type: String, default: '/placeholder-category.jpg' }
+});
+
+const Category = mongoose.models.Category || mongoose.model('Category', categorySchema);
+
+// Routes
+app.get('/api/test', async (req, res) => {
+  try {
+    await connectToDatabase();
+    res.json({ 
+      message: 'API is working with real MongoDB!', 
+      timestamp: new Date().toISOString(),
+      database: 'Connected'
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      message: 'Database connection failed', 
+      error: error.message 
+    });
+  }
+});
+
+app.get('/api/products', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const products = await Product.find({}).lean();
+    res.json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ error: 'Failed to fetch products', details: error.message });
+  }
+});
+
+app.get('/api/products/featured', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const featuredProducts = await Product.find({ featured: true }).lean();
+    res.json(featuredProducts);
+  } catch (error) {
+    console.error('Error fetching featured products:', error);
+    res.status(500).json({ error: 'Failed to fetch featured products', details: error.message });
+  }
+});
+
+app.get('/api/products/:id', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const productId = req.params.id;
+    
+    // Try to find by MongoDB ObjectId first
+    let product;
+    if (mongoose.Types.ObjectId.isValid(productId)) {
+      product = await Product.findById(productId).lean();
     }
-  ];
-  
-  res.json(products);
-});
-
-app.get('/api/products/featured', (req, res) => {
-  const featuredProducts = [
-    {
-      id: 1,
-      name: "Advanced Firewall System",
-      price: 299.99,
-      description: "Professional-grade firewall with AI threat detection",
-      category: "Network Security",
-      image: "/placeholder-product.jpg",
-      featured: true
-    },
-    {
-      id: 2,
-      name: "Enterprise VPN Gateway", 
-      price: 599.99,
-      description: "Secure VPN gateway for enterprise networks",
-      category: "Network Security",
-      image: "/placeholder-product.jpg",
-      featured: true
+    
+    // If not found, try to find by custom id field (if exists)
+    if (!product) {
+      product = await Product.findOne({ 
+        $or: [
+          { id: parseInt(productId) },
+          { productId: parseInt(productId) }
+        ]
+      }).lean();
     }
-  ];
-  
-  res.json(featuredProducts);
-});
-
-app.get('/api/products/:id', (req, res) => {
-  const productId = parseInt(req.params.id);
-  
-  // Mock product detail
-  const product = {
-    id: productId,
-    name: `Security Product ${productId}`,
-    price: 299.99 + (productId * 50),
-    description: `Professional security solution ${productId}`,
-    category: "Network Security",
-    image: "/placeholder-product.jpg",
-    features: [
-      "Advanced threat protection",
-      "Real-time monitoring",
-      "Cloud integration",
-      "24/7 support"
-    ],
-    specifications: {
-      "Model": `SP-${productId}00`,
-      "Throughput": "10 Gbps",
-      "Supported Protocols": "HTTP/HTTPS, FTP, SSH",
-      "Operating System": "Linux-based",
-      "Memory": "8GB RAM",
-      "Storage": "256GB SSD"
+    
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
     }
-  };
-  
-  res.json(product);
+    
+    res.json(product);
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    res.status(500).json({ error: 'Failed to fetch product', details: error.message });
+  }
 });
 
-// Categories route
-app.get('/api/categories', (req, res) => {
-  const categories = [
-    { id: 1, name: "Network Security", description: "Firewalls, VPNs, and network protection" },
-    { id: 2, name: "Endpoint Security", description: "Antivirus, EDR, and device protection" },
-    { id: 3, name: "Cloud Security", description: "Cloud-native security solutions" },
-    { id: 4, name: "Identity & Access", description: "IAM and authentication solutions" }
-  ];
-  
-  res.json(categories);
+app.get('/api/categories', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const categories = await Category.find({}).lean();
+    res.json(categories);
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    res.status(500).json({ error: 'Failed to fetch categories', details: error.message });
+  }
 });
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+// Search products
+app.get('/api/products/search/:query', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const query = req.params.query;
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } },
+        { description: { $regex: query, $options: 'i' } },
+        { category: { $regex: query, $options: 'i' } }
+      ]
+    }).lean();
+    res.json(products);
+  } catch (error) {
+    console.error('Error searching products:', error);
+    res.status(500).json({ error: 'Failed to search products', details: error.message });
+  }
+});
+
+// Get products by category
+app.get('/api/products/category/:category', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const category = req.params.category;
+    const products = await Product.find({ 
+      category: { $regex: category, $options: 'i' } 
+    }).lean();
+    res.json(products);
+  } catch (error) {
+    console.error('Error fetching products by category:', error);
+    res.status(500).json({ error: 'Failed to fetch products by category', details: error.message });
+  }
+});
+
+// Health check with database status
+app.get('/api/health', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const productCount = await Product.countDocuments();
+    const categoryCount = await Category.countDocuments();
+    
+    res.json({ 
+      status: 'OK', 
+      timestamp: new Date().toISOString(),
+      database: 'Connected',
+      products: productCount,
+      categories: categoryCount
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 'ERROR', 
+      timestamp: new Date().toISOString(),
+      database: 'Disconnected',
+      error: error.message
+    });
+  }
 });
 
 // Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
+  res.status(500).json({ error: 'Something went wrong!', details: err.message });
 });
 
 // 404 handler
