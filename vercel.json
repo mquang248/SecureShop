@@ -4,9 +4,8 @@
   "outputDirectory": "frontend/dist",
   "installCommand": "npm install && cd api && npm install && cd ../backend && npm install && cd ../frontend && npm install",
   "functions": {
-    "api/index.js": {
-      "runtime": "nodejs18.x",
-      "includeFiles": "backend/**"
+    "api/**/*.js": {
+      "runtime": "@vercel/node@3.0.7"
     }
   },
   "rewrites": [
