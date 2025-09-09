@@ -2,15 +2,9 @@ import axios from 'axios'
 
 // Get API URL with fallback
 const getApiUrl = () => {
-  // In production on Vercel, use relative path to API functions
-  if (import.meta.env.PROD && !import.meta.env.VITE_API_URL) {
+  // Always use relative path in production for Vercel
+  if (import.meta.env.PROD) {
     return '/api'
-  }
-  
-  // Use environment variable if provided
-  const envApiUrl = import.meta.env.VITE_API_URL
-  if (envApiUrl) {
-    return envApiUrl
   }
   
   // Development fallback
