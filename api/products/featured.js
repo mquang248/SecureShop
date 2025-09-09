@@ -78,5 +78,12 @@ export default function handler(req, res) {
     }
   ];
 
-  res.status(200).json(featuredProducts);
+  const response = {
+    success: true,
+    data: {
+      products: featuredProducts
+    }
+  };
+
+  res.status(200).json(response);
 }

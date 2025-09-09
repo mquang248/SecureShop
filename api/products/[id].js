@@ -117,5 +117,10 @@ export default function handler(req, res) {
     return;
   }
 
-  res.status(200).json(product);
+  const response = {
+    success: true,
+    data: product
+  };
+
+  res.status(200).json(response);
 }

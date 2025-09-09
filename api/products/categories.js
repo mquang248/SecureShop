@@ -38,5 +38,10 @@ export default function handler(req, res) {
     }
   ];
 
-  res.status(200).json(categories);
+  const response = {
+    success: true,
+    data: categories
+  };
+
+  res.status(200).json(response);
 }

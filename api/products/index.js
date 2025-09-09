@@ -138,12 +138,15 @@ export default function handler(req, res) {
   const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
   const response = {
-    products: paginatedProducts,
-    totalProducts: filteredProducts.length,
-    totalPages: Math.ceil(filteredProducts.length / limit),
-    currentPage: page,
-    hasNext: endIndex < filteredProducts.length,
-    hasPrev: page > 1
+    success: true,
+    data: {
+      products: paginatedProducts,
+      totalProducts: filteredProducts.length,
+      totalPages: Math.ceil(filteredProducts.length / limit),
+      currentPage: page,
+      hasNext: endIndex < filteredProducts.length,
+      hasPrev: page > 1
+    }
   };
 
   res.status(200).json(response);
