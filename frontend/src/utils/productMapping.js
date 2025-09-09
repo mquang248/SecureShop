@@ -1,23 +1,23 @@
 // Mapping from MongoDB ObjectId to sequential numbers 1-18 for product pages
 export const productIdMapping = {
-  "68befafd2c339d20b9f896ed": 1,  // DarkTrace Mini
-  "68befafd2c339d20b9f896eb": 2,  // CyberEye Monitor
-  "68befafd2c339d20b9f896e9": 3,  // SafeComm Headset
-  "68befafd2c339d20b9f896e7": 4,  // BioKey Ultra
-  "68befafd2c339d20b9f896e5": 5,  // QuantumVPN Cube
-  "68befafd2c339d20b9f896e3": 6,  // VaultPass Pro
-  "68befafd2c339d20b9f896e1": 7,  // ShieldLock X1
-  "68befafd2c339d20b9f896f7": 8,  // Guardian Watch
-  "68befafd2c339d20b9f896f5": 9,  // ZeroTrace Drive
-  "68befafd2c339d20b9f896f3": 10, // SafeCall Shield
-  "68befafd2c339d20b9f896f1": 11, // PhishBlocker Pro
-  "68befafd2c339d20b9f896ef": 12, // CryptoVault Stick
-  "68bf07841c3f92c465f10c94": 13, // SecureWifi Manager Pro
-  "68bf07841c3f92c465f10c96": 14, // ThreatHunter AI Platform
-  "68bf07841c3f92c465f10c95": 15, // DataGuard Backup Shield
-  "68bf07841c3f92c465f10c99": 16, // SecureCloud Gateway
-  "68bf07841c3f92c465f10c98": 17, // CloudAccess Identity Hub
-  "68bf07841c3f92c465f10c97": 18  // MobileSecure Endpoint Agent
+  "68c05d54feb6d22fdac86064": 1,  // Advanced Firewall System Pro
+  "68c05d54feb6d22fdac86077": 2,  // Security Monitoring Dashboard Enterprise
+  "68c05d54feb6d22fdac86074": 3,  // Identity Access Manager Pro
+  "68c05d54feb6d22fdac86071": 4,  // Data Encryption Tool Military Grade
+  "68c05d54feb6d22fdac8606e": 5,  // Endpoint Protection Suite Ultimate
+  "68c05d54feb6d22fdac8606b": 6,  // Intrusion Detection System AI
+  "68c05d54feb6d22fdac86068": 7,  // Enterprise VPN Gateway Elite
+  "68c05d54feb6d22fdac86092": 8,  // Security Training Platform
+  "68c05d54feb6d22fdac8608f": 9,  // Backup and Disaster Recovery
+  "68c05d54feb6d22fdac8608c": 10, // Web Application Firewall
+  "68c05d54feb6d22fdac86089": 11, // Database Security Monitor
+  "68c05d54feb6d22fdac86086": 12, // Email Security Gateway
+  "68c05d54feb6d22fdac86083": 13, // Vulnerability Assessment Scanner
+  "68c05d54feb6d22fdac86080": 14, // Network Access Control System
+  "68c05d54feb6d22fdac8607d": 15, // Cloud Security Platform
+  "68c05d54feb6d22fdac8607a": 16, // Mobile Device Security Manager
+  "68c05d54feb6d22fdac86098": 17, // Compliance Management Suite
+  "68c05d54feb6d22fdac86095": 18  // IoT Security Gateway
 }
 
 // Function to get product page number from MongoDB ID
