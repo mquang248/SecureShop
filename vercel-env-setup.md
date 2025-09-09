@@ -16,8 +16,8 @@ JWT_EXPIRE=7d
 PORT=5000
 NODE_ENV=production
 
-# Frontend API URL (Your Vercel app URL)
-VITE_API_URL=https://your-app-name.vercel.app/api
+# Frontend API URL (Your actual Vercel app URL)
+VITE_API_URL=https://secure-shop-nine.vercel.app/api
 
 # AWS Configuration (Optional)
 AWS_ACCESS_KEY_ID=your-aws-access-key
