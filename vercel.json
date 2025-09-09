@@ -1,27 +1,4 @@
 {
-  "version": 2,
   "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/dist",
-  "rewrites": [
-    {
-      "source": "/api/products/featured",
-      "destination": "/api/featured"
-    },
-    {
-      "source": "/api/products/categories",
-      "destination": "/api/categories"
-    },
-    {
-      "source": "/api/products/(.*)",
-      "destination": "/api/product?id=$1"
-    },
-    {
-      "source": "/api/products",
-      "destination": "/api/index"
-    },
-    {
-      "source": "/((?!api/.*).*)",
-      "destination": "/index.html"
-    }
-  ]
+  "outputDirectory": "frontend/dist"
 }
