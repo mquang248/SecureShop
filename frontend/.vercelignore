@@ -1,0 +1,41 @@
+# Dependencies
+node_modules
+*/node_modules
+
+# Environment files
+.env
+.env.local
+.env.production
+backend/.env
+
+# Build artifacts
+dist
+build
+.next
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Cache
+.cache
+.vite
+
+# IDE
+.vscode
+.idea
+
+# Docker
+docker-compose.yml
+Dockerfile
+*/Dockerfile
+
+# Backend specific (since we're only deploying frontend)
+backend/
+
+# Development
+.git
+.gitignore
+README.md
+PRODUCT_*.md

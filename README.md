@@ -361,6 +361,41 @@ GET  /api/payment/methods       # Get payment methods
 
 ## 🚀 Deployment Guide
 
+### Vercel Deployment (Frontend Only)
+
+Deploy the frontend to Vercel for fast, global CDN distribution:
+
+#### 1. Prerequisites
+- Vercel account
+- GitHub repository
+- Backend API deployed separately (AWS, Railway, etc.)
+
+#### 2. Quick Deploy
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy from project root
+vercel --prod
+```
+
+#### 3. Environment Variables
+Set these environment variables in Vercel dashboard:
+```
+VITE_API_URL=https://your-backend-api.com/api
+VITE_APP_ENV=production
+```
+
+#### 4. Custom Domain (Optional)
+```bash
+# Add custom domain
+vercel domains add yourdomain.com
+vercel alias your-deployment-url.vercel.app yourdomain.com
+```
+
 ### AWS EC2 Deployment
 
 #### 1. Infrastructure Setup
