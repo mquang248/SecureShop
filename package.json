@@ -27,8 +27,5 @@
     "nodejs"
   ],
   "author": "SecureShop Team",
-  "license": "MIT",
-  "engines": {
-    "node": "18.x"
-  }
+  "license": "MIT"
 }
