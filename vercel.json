@@ -10,7 +10,10 @@
     },
     {
       "src": "backend/server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "maxDuration": 30
+      }
     }
   ],
   "routes": [
@@ -25,10 +28,5 @@
   ],
   "outputDirectory": "frontend/dist",
   "buildCommand": "cd frontend && npm run build",
-  "installCommand": "npm install && cd frontend && npm install && cd ../backend && npm install",
-  "functions": {
-    "backend/server.js": {
-      "maxDuration": 30
-    }
-  }
+  "installCommand": "npm install && cd frontend && npm install && cd ../backend && npm install"
 }
