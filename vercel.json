@@ -28,5 +28,5 @@
   ],
   "outputDirectory": "frontend/dist",
   "buildCommand": "cd frontend && npm run build",
-  "installCommand": "npm install && cd frontend && npm install && cd ../backend && npm install"
+  "installCommand": "npm install --legacy-peer-deps && cd frontend && npm install --legacy-peer-deps && cd ../backend && npm install --legacy-peer-deps"
 }
