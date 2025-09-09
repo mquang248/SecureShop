@@ -1,9 +1,26 @@
 import axios from 'axios'
 
+// Get API URL with fallback
+const getApiUrl = () => {
+  // In production on Vercel, use relative path to API functions
+  if (import.meta.env.PROD && !import.meta.env.VITE_API_URL) {
+    return '/api'
+  }
+  
+  // Use environment variable if provided
+  const envApiUrl = import.meta.env.VITE_API_URL
+  if (envApiUrl) {
+    return envApiUrl
+  }
+  
+  // Development fallback
+  return 'http://localhost:5000/api'
+}
+
 // Create axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
-  timeout: 10000,
+  baseURL: getApiUrl(),
+  timeout: 30000, // Increased timeout for serverless functions
   headers: {
     'Content-Type': 'application/json',
   },

@@ -214,8 +214,22 @@ const HomePage = () => {
               <LoadingSpinner size="lg" />
             </div>
           ) : error ? (
-            <div className="text-center py-12">
-              <p className="text-red-600">Error loading products: {error.message}</p>
+            <div className="text-center py-12 bg-orange-50 rounded-lg border border-orange-200">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Cloud className="w-8 h-8 text-orange-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-orange-800 mb-2">Backend API Not Connected</h3>
+                <p className="text-orange-700 mb-4">
+                  The backend API is not available. This is a demo frontend deployment.
+                </p>
+                <div className="text-sm text-orange-600 space-y-1">
+                  <p>To connect with live data:</p>
+                  <p>1. Deploy backend API (Node.js/Express)</p>
+                  <p>2. Set VITE_API_URL environment variable</p>
+                  <p>3. Redeploy frontend</p>
+                </div>
+              </div>
             </div>
           ) : featuredProducts && featuredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">

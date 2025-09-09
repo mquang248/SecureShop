@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useQuery } from '@tanstack/react-query'
-import { Search, Grid, List, Filter, X, ChevronDown, ChevronUp } from 'lucide-react'
+import { Search, Grid, List, Filter, X, ChevronDown, ChevronUp, Shield } from 'lucide-react'
 import api from '../utils/api'
 import ProductCard from '../components/products/ProductCard'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
@@ -84,8 +84,19 @@ const ShopPage = () => {
   if (error) {
     return (
       <div className="container-width section-padding py-12">
-        <div className="text-center">
-          <p className="text-red-600">Error loading products. Please try again.</p>
+        <div className="text-center max-w-md mx-auto">
+          <div className="bg-orange-50 rounded-lg border border-orange-200 p-6">
+            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Shield className="w-8 h-8 text-orange-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-orange-800 mb-2">Products Unavailable</h3>
+            <p className="text-orange-700 mb-4">
+              Cannot connect to backend API. This is a demo frontend.
+            </p>
+            <p className="text-sm text-orange-600">
+              Deploy the backend API and set VITE_API_URL to see products.
+            </p>
+          </div>
         </div>
       </div>
     )
